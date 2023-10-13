@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 
 import 'package:google_fonts/google_fonts.dart';
 
-import 'package:time_traveler/page/home.dart';
+import 'package:time_traveler/page/intro_screen.dart';
+import 'package:time_traveler/page/quiz_screen.dart';
 
 void main() {
   runApp(
@@ -25,7 +26,11 @@ void main() {
               color: Color.fromRGBO(245, 245, 220, 1),
             ),
           )),
-      home: const Home(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => IntroScreen(),
+        '/quiz': (context) => QuizScreen(),
+      },
     ),
   );
 }
