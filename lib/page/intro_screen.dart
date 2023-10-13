@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
+import 'package:time_traveler/data/texts.dart';
+
 import 'package:neon_widgets/neon_widgets.dart';
 
-class Home extends StatefulWidget {
-  const Home({super.key});
+class IntroScreen extends StatefulWidget {
+  const IntroScreen({super.key});
 
   @override
-  State<Home> createState() => _HomeState();
+  State<IntroScreen> createState() => _IntroScreenState();
 }
 
-class _HomeState extends State<Home> {
+class _IntroScreenState extends State<IntroScreen> {
+  Texts texts = Texts();
+  int text_idx = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,6 +39,21 @@ class _HomeState extends State<Home> {
                     )),
                 Center(child: Image.asset('assets/mic.png')),
               ],
+            ),
+            GestureDetector(
+              onTap: () {
+                setState(() {
+                  if (text_idx < texts.texts.length - 1) {
+                    text_idx++;
+                  } else {
+                    Navigator.pushNamed(context, '/quiz');
+                  }
+                });
+              },
+              child: Text(
+                texts.texts[text_idx],
+                style: Theme.of(context).textTheme.displayMedium,
+              ),
             ),
           ],
         ),
