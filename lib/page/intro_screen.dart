@@ -16,25 +16,17 @@ class _IntroScreenState extends State<IntroScreen> {
   Texts texts = Texts();
   int text_idx = 0;
 
-  GestureDetector get_next_animated_text(int idx) {
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          text_idx++;
-        });
-      },
-      child: AbsorbPointer(
-        child: AnimatedTextKit(
-          animatedTexts: [
-            TypewriterAnimatedText(
-              texts.texts[idx],
-              speed: const Duration(milliseconds: 100),
-              textStyle: Theme.of(context).textTheme.displayMedium,
-            ),
-          ],
-          isRepeatingAnimation: false,
+  AnimatedTextKit get_next_animated_text(int idx) {
+    return AnimatedTextKit(
+      key: ValueKey(idx),
+      animatedTexts: [
+        TypewriterAnimatedText(
+          texts.texts[idx],
+          speed: const Duration(milliseconds: 100),
+          textStyle: Theme.of(context).textTheme.displayMedium,
         ),
-      ),
+      ],
+      isRepeatingAnimation: false,
     );
   }
 
@@ -66,7 +58,19 @@ class _IntroScreenState extends State<IntroScreen> {
                 Center(child: Image.asset('assets/mic.png')),
               ],
             ),
-            animatedTextKit,
+            Container(
+              margin: const EdgeInsets.only(top: 20.0),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    text_idx++;
+                  });
+                },
+                child: AbsorbPointer(
+                  child: animatedTextKit,
+                ),
+              ),
+            ),
           ],
         ),
       ),
