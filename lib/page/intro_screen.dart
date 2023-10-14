@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:time_traveler/data/texts.dart';
 
 import 'package:neon_widgets/neon_widgets.dart';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -15,8 +16,33 @@ class _IntroScreenState extends State<IntroScreen> {
   Texts texts = Texts();
   int text_idx = 0;
 
+  GestureDetector get_next_animated_text(int idx) {
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          text_idx++;
+        });
+      },
+      child: AbsorbPointer(
+        child: AnimatedTextKit(
+          animatedTexts: [
+            TypewriterAnimatedText(
+              texts.texts[idx],
+              speed: const Duration(milliseconds: 100),
+              textStyle: Theme.of(context).textTheme.displayMedium,
+            ),
+          ],
+          isRepeatingAnimation: false,
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
+    print(text_idx);
+    Widget animatedTextKit = get_next_animated_text(text_idx);
+
     return Scaffold(
       body: Center(
         child: Column(
@@ -28,7 +54,7 @@ class _IntroScreenState extends State<IntroScreen> {
             Stack(
               children: [
                 Container(
-                    padding: EdgeInsets.fromLTRB(4, 60, 0, 0),
+                    padding: const EdgeInsets.fromLTRB(4, 60, 0, 0),
                     alignment: Alignment.center,
                     child: FlickerNeonPoint(
                       spreadColor: Theme.of(context).primaryColor,
@@ -40,21 +66,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 Center(child: Image.asset('assets/mic.png')),
               ],
             ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  if (text_idx < texts.texts.length - 1) {
-                    text_idx++;
-                  } else {
-                    Navigator.pushNamed(context, '/quiz');
-                  }
-                });
-              },
-              child: Text(
-                texts.texts[text_idx],
-                style: Theme.of(context).textTheme.displayMedium,
-              ),
-            ),
+            animatedTextKit,
           ],
         ),
       ),
